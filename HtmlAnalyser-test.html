@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HTML Analyser Test</title>
+</head>
+<body>
+  <h1>HTML Analyser Test Page</h1>
+  <p>This page uses React and Bootstrap to test the refactored HTML Analyser bookmarklet.</p>
+
+  <!-- React root element -->
+  <div id="root"></div>
+
+  <!-- Bootstrap components -->
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-primary">Bootstrap Button</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load React (for detection) -->
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script>
+    ReactDOM.render(React.createElement('h2', null, 'React is loaded'), document.getElementById('root'));
+  </script>
+
+  <!-- Load the bookmarklet suite and the refactored analyser -->
+  <script src="JavaScript/bookmarklet-suite.js"></script>
+  <script>
+    // We need to initialize the suite before loading the refactored script
+    window.onload = function() {
+        BMS.init();
+        const analyserScript = document.createElement('script');
+        analyserScript.src = 'JavaScript/HtmlAnalyser-refactored.js';
+        document.body.appendChild(analyserScript);
+    };
+  </script>
+
+</body>
+</html>
