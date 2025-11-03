@@ -1,4 +1,5 @@
 (function() {
+  setTimeout(() => {
 
   // Ensure the BMS suite is loaded
   if (!window.BMS) {
@@ -58,4 +59,5 @@
 
   addCopyButtonListeners();
 
+  }, 100);
 })();

@@ -1,4 +1,5 @@
 (function() {
+  setTimeout(() => {
 
   // Ensure the BMS suite is loaded
   if (!window.BMS) {
@@ -84,4 +85,5 @@
     footer: '<button class="bms-button" onclick="document.getElementById(\'twitter-media-extractor-panel\').remove()">Close</button>'
   });
 
+  }, 100);
 })();
