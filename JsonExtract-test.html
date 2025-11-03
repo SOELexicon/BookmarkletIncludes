@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON-LD Extractor Test</title>
+
+  <!-- Sample JSON-LD data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Google",
+    "url": "http://www.google.com"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "John Doe",
+    "jobTitle": "Software Engineer"
+  }
+  </script>
+
+</head>
+<body>
+  <h1>JSON-LD Extractor Test Page</h1>
+  <p>This page contains two JSON-LD script tags to test the refactored JSON Extractor bookmarklet.</p>
+
+  <!-- Load the bookmarklet suite and the refactored extractor -->
+  <script src="JavaScript/bookmarklet-suite.js"></script>
+  <script>
+    // We need to initialize the suite before loading the refactored script
+    window.onload = function() {
+        BMS.init();
+        const extractorScript = document.createElement('script');
+        extractorScript.src = 'JavaScript/JsonExtract-refactored.js';
+        document.body.appendChild(extractorScript);
+    };
+  </script>
+
+</body>
+</html>

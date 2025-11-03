@@ -100,6 +100,32 @@ window.BMS = {
   border-bottom-right-radius: 7px;
 }
 
+.bms-panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--bms-border-color);
+}
+
+.bms-tab-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: var(--bms-text-color);
+}
+
+.bms-tab-btn.bms-active {
+  background-color: var(--bms-background-color);
+  border-bottom: 2px solid var(--bms-primary-color);
+}
+
+.bms-tab-content {
+  display: none;
+}
+
+.bms-tab-content.bms-active {
+  display: block;
+}
+
 /* 4. Modal Component */
 .bms-modal-overlay {
   position: fixed;
@@ -232,9 +258,8 @@ window.BMS = {
 
       const panel = document.createElement('div');
       panel.id = id;
-      panel.className = 'bms-panel bms-container'; // Add bms-container for style scoping
+      panel.className = 'bms-panel bms-container';
 
-      // Header
       const header = document.createElement('div');
       header.className = 'bms-panel-header';
       header.innerHTML = `
@@ -245,27 +270,54 @@ window.BMS = {
         </div>
       `;
 
-      // Content
-      const contentContainer = document.createElement('div');
-      contentContainer.className = 'bms-panel-content';
-      BMS.DOM.setHTML(contentContainer, content);
+      panel.appendChild(header);
 
-      // Footer
-      let footerContainer;
-      if (footer) {
-        footerContainer = document.createElement('div');
-        footerContainer.className = 'bms-panel-footer';
-        BMS.DOM.setHTML(footerContainer, footer);
+      if (typeof content === 'string') {
+        const contentContainer = document.createElement('div');
+        contentContainer.className = 'bms-panel-content';
+        BMS.DOM.setHTML(contentContainer, content);
+        panel.appendChild(contentContainer);
+      } else if (Array.isArray(content)) {
+        const tabsContainer = document.createElement('div');
+        tabsContainer.className = 'bms-panel-tabs';
+        const contentContainer = document.createElement('div');
+        contentContainer.className = 'bms-panel-content';
+
+        content.forEach((tab, index) => {
+          const tabBtn = document.createElement('button');
+          tabBtn.className = 'bms-tab-btn';
+          tabBtn.textContent = tab.title;
+          if (index === 0) tabBtn.classList.add('bms-active');
+
+          const tabContent = document.createElement('div');
+          tabContent.className = 'bms-tab-content';
+          if (index === 0) tabContent.classList.add('bms-active');
+          BMS.DOM.setHTML(tabContent, tab.content);
+
+          tabBtn.onclick = () => {
+            tabsContainer.querySelectorAll('.bms-tab-btn').forEach(btn => btn.classList.remove('bms-active'));
+            contentContainer.querySelectorAll('.bms-tab-content').forEach(c => c.classList.remove('bms-active'));
+            tabBtn.classList.add('bms-active');
+            tabContent.classList.add('bms-active');
+          };
+
+          tabsContainer.appendChild(tabBtn);
+          contentContainer.appendChild(tabContent);
+        });
+
+        panel.appendChild(tabsContainer);
+        panel.appendChild(contentContainer);
       }
 
-      // Assemble
-      panel.appendChild(header);
-      panel.appendChild(contentContainer);
-      if (footerContainer) panel.appendChild(footerContainer);
+      if (footer) {
+        const footerContainer = document.createElement('div');
+        footerContainer.className = 'bms-panel-footer';
+        BMS.DOM.setHTML(footerContainer, footer);
+        panel.appendChild(footerContainer);
+      }
 
       document.body.appendChild(panel);
 
-      // Add functionality
       this._makeDraggable(panel, header);
       this._addPanelControls(panel);
       

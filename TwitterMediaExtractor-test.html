@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitter Media Extractor Test</title>
+</head>
+<body>
+  <h1>Twitter Media Extractor Test Page</h1>
+  <p>This page is for testing the refactored Twitter Media Extractor bookmarklet.</p>
+  <p>Since this page is not on twitter.com or x.com, the bookmarklet will not find any media. It will, however, display a panel with a message indicating that it should be run on the correct site.</p>
+
+  <!-- Load the bookmarklet suite and the refactored extractor -->
+  <script src="JavaScript/bookmarklet-suite.js"></script>
+  <script>
+    // We need to initialize the suite before loading the refactored script
+    window.onload = function() {
+        BMS.init();
+        const extractorScript = document.createElement('script');
+        extractorScript.src = 'JavaScript/TwitterMediaExtractor-refactored.js';
+        document.body.appendChild(extractorScript);
+    };
+  </script>
+
+</body>
+</html>

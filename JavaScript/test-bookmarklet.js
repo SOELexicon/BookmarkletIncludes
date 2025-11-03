@@ -24,7 +24,20 @@
     BMS.UI.createPanel({
       id: 'bms-test-panel',
       title: 'BMS Test Panel',
-      content: '<p>The Bookmarklet Suite has been loaded and initialized.</p><p>This panel is a demonstration of the UI capabilities.</p><button id="bms-show-modal-btn" class="bms-button">Show Modal</button> <button id="bms-show-spinner-btn" class="bms-button">Show Spinner</button> <button id="bms-show-status-btn" class="bms-button">Show Status</button>',
+      content: [
+        {
+          title: 'Home',
+          content: '<p>Welcome to the BMS Test Panel!</p><p>This panel demonstrates the tabbed interface.</p>'
+        },
+        {
+          title: 'UI Tests',
+          content: '<button id="bms-show-modal-btn" class="bms-button">Show Modal</button> <button id="bms-show-spinner-btn" class="bms-button">Show Spinner</button>'
+        },
+        {
+          title: 'Status Tests',
+          content: '<button id="bms-show-status-btn" class="bms-button">Show Status Messages</button>'
+        }
+      ],
       footer: '<button class="bms-button bms-button-primary">OK</button>&nbsp;<button class="bms-button">Cancel</button>'
     });
 

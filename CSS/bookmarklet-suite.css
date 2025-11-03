@@ -84,6 +84,32 @@
   border-bottom-right-radius: 7px;
 }
 
+.bms-panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--bms-border-color);
+}
+
+.bms-tab-btn {
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: var(--bms-text-color);
+}
+
+.bms-tab-btn.bms-active {
+  background-color: var(--bms-background-color);
+  border-bottom: 2px solid var(--bms-primary-color);
+}
+
+.bms-tab-content {
+  display: none;
+}
+
+.bms-tab-content.bms-active {
+  display: block;
+}
+
 /* 4. Modal Component */
 .bms-modal-overlay {
   position: fixed;
