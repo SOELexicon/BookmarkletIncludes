@@ -52,6 +52,8 @@ window.BMS = {
   top: 50px;
   left: 50px;
   width: 350px;
+  min-width: 200px;
+  min-height: 150px;
   max-width: 90vw;
   background-color: var(--bms-background-color);
   border: 1px solid var(--bms-border-color);
@@ -98,6 +100,16 @@ window.BMS = {
   background-color: var(--bms-header-bg);
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
+  position: relative;
+}
+
+.bms-resizer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  cursor: se-resize;
 }
 
 .bms-panel-tabs {
@@ -265,6 +277,7 @@ window.BMS = {
       header.innerHTML = `
         <span class="bms-panel-title">${title}</span>
         <div class="bms-panel-controls">
+          <button class="bms-theme-btn">T</button>
           <button class="bms-minimize-btn">-</button>
           <button class="bms-close-btn">×</button>
         </div>
@@ -313,7 +326,11 @@ window.BMS = {
         const footerContainer = document.createElement('div');
         footerContainer.className = 'bms-panel-footer';
         BMS.DOM.setHTML(footerContainer, footer);
+        const resizer = document.createElement('div');
+        resizer.className = 'bms-resizer';
+        footerContainer.appendChild(resizer);
         panel.appendChild(footerContainer);
+        this._makeResizable(panel, resizer);
       }
 
       document.body.appendChild(panel);
@@ -322,6 +339,31 @@ window.BMS = {
       this._addPanelControls(panel);
       
       return panel;
+    },
+
+    _makeResizable: function(panel, resizer) {
+      let startX, startY, startWidth, startHeight;
+
+      resizer.onmousedown = initDrag;
+
+      function initDrag(e) {
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = parseInt(document.defaultView.getComputedStyle(panel).width, 10);
+        startHeight = parseInt(document.defaultView.getComputedStyle(panel).height, 10);
+        document.documentElement.addEventListener('mousemove', doDrag, false);
+        document.documentElement.addEventListener('mouseup', stopDrag, false);
+      }
+
+      function doDrag(e) {
+        panel.style.width = (startWidth + e.clientX - startX) + 'px';
+        panel.style.height = (startHeight + e.clientY - startY) + 'px';
+      }
+
+      function stopDrag(e) {
+        document.documentElement.removeEventListener('mousemove', doDrag, false);    
+        document.documentElement.removeEventListener('mouseup', stopDrag, false);
+      }
     },
 
     createModal: function({ id, title, content }) {
@@ -435,6 +477,7 @@ window.BMS = {
     _addPanelControls: function(panel) {
         const closeBtn = panel.querySelector('.bms-close-btn');
         const minimizeBtn = panel.querySelector('.bms-minimize-btn');
+        const themeBtn = panel.querySelector('.bms-theme-btn');
         const content = panel.querySelector('.bms-panel-content');
         const footer = panel.querySelector('.bms-panel-footer');
 
@@ -445,6 +488,10 @@ window.BMS = {
             content.style.display = isMinimized ? '' : 'none';
             if(footer) footer.style.display = isMinimized ? '' : 'none';
             minimizeBtn.textContent = isMinimized ? '-' : '+';
+        };
+
+        themeBtn.onclick = () => {
+            panel.classList.toggle('bms-dark-theme');
         };
     }
   },
@@ -482,6 +529,41 @@ window.BMS = {
         BMS.UI.updateStatus('Failed to copy', 'error');
       }
       document.body.removeChild(ta);
+    },
+
+    throttle: function(func, limit) {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    },
+
+    debounce: function(func, delay) {
+      let timeout;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), delay);
+      };
+    },
+
+    parseEngagementCount: function(text) {
+      if (!text) return 0;
+      const cleanText = text.replace(/[^0-9KkMmBb.]/g, '').toUpperCase();
+      if (cleanText.length === 0) return 0;
+      const number = parseFloat(cleanText.replace(/[KMB]/g, ''));
+      if (isNaN(number)) return 0;
+      if (cleanText.includes('K')) return Math.round(number * 1000);
+      if (cleanText.includes('M')) return Math.round(number * 1000000);
+      if (cleanText.includes('B')) return Math.round(number * 1000000000);
+      return Math.round(number);
     }
   }
 };

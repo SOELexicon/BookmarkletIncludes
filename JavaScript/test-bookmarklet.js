@@ -36,6 +36,23 @@
         {
           title: 'Status Tests',
           content: '<button id="bms-show-status-btn" class="bms-button">Show Status Messages</button>'
+        },
+        {
+          title: 'Utils Tests',
+          content: '
+            <h4>Throttle</h4>
+            <button id="bms-throttle-btn" class="bms-button">Click me (throttled)</button>
+            <p>Counter: <span id="bms-throttle-counter">0</span></p>
+            <hr>
+            <h4>Debounce</h4>
+            <input type="text" id="bms-debounce-input" placeholder="Type here (debounced)">
+            <p>Input value: <span id="bms-debounce-output"></span></p>
+            <hr>
+            <h4>Parse Engagement Count</h4>
+            <input type="text" id="bms-parse-input" placeholder="e.g., 1.5K">
+            <button id="bms-parse-btn" class="bms-button">Parse</button>
+            <p>Result: <span id="bms-parse-output"></span></p>
+          '
         }
       ],
       footer: '<button class="bms-button bms-button-primary">OK</button>&nbsp;<button class="bms-button">Cancel</button>'
@@ -61,6 +78,25 @@
       setTimeout(() => BMS.UI.updateStatus('This is a success message.', 'success'), 1000);
       setTimeout(() => BMS.UI.updateStatus('This is a warning message.', 'warning'), 2000);
       setTimeout(() => BMS.UI.updateStatus('This is an error message.', 'error'), 3000);
+    };
+
+    // Utils Tests
+    const throttleCounter = document.getElementById('bms-throttle-counter');
+    let throttleCount = 0;
+    document.getElementById('bms-throttle-btn').addEventListener('click', BMS.Utils.throttle(() => {
+      throttleCount++;
+      throttleCounter.textContent = throttleCount;
+    }, 1000));
+
+    const debounceOutput = document.getElementById('bms-debounce-output');
+    document.getElementById('bms-debounce-input').addEventListener('input', BMS.Utils.debounce((e) => {
+      debounceOutput.textContent = e.target.value;
+    }, 500));
+
+    const parseOutput = document.getElementById('bms-parse-output');
+    document.getElementById('bms-parse-btn').onclick = () => {
+      const inputText = document.getElementById('bms-parse-input').value;
+      parseOutput.textContent = BMS.Utils.parseEngagementCount(inputText);
     };
   };
   document.head.appendChild(script);
