@@ -58,18 +58,46 @@
     return frameworks;
   }
 
+  function getMetaTags() {
+    const metaTags = [];
+    document.querySelectorAll('meta').forEach(meta => {
+      const name = meta.getAttribute('name') || meta.getAttribute('property');
+      const content = meta.getAttribute('content');
+      if (name && content) {
+        metaTags.push({ name, content });
+      }
+    });
+    return metaTags;
+  }
+
   function generateContent() {
     const frameworks = detectFrameworks();
-    if (frameworks.length === 0) {
-      return '<p>No frameworks detected.</p>';
+    const metaTags = getMetaTags();
+    const tabs = [];
+
+    if (frameworks.length > 0) {
+      let frameworkContent = '<ul>';
+      for (const framework of frameworks) {
+        frameworkContent += `<li>${framework}</li>`;
+      }
+      frameworkContent += '</ul>';
+      tabs.push({ title: 'Frameworks', content: frameworkContent });
     }
 
-    let content = '<ul>';
-    for (const framework of frameworks) {
-      content += `<li>${framework}</li>`;
+    if (metaTags.length > 0) {
+      let metaContent = '<table>';
+      for (const tag of metaTags) {
+        metaContent += `<tr><td><strong>${tag.name}</strong></td><td>${tag.content}</td></tr>`;
+      }
+      metaContent += '</table>';
+      tabs.push({ title: 'Meta Tags', content: metaContent });
     }
-    content += '</ul>';
-    return content;
+
+    if (tabs.length === 0) {
+        return '<p>No frameworks or meta tags detected.</p>';
+    }
+
+    return tabs;
   }
 
   // Create the panel using the BMS suite

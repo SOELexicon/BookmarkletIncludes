@@ -1,6 +1,6 @@
 javascript:(function(){
-  const SUITE_URL = '../JavaScript/bookmarklet-suite.js';
-  const SCRIPT_URL = '../JavaScript/HtmlAnalyser-refactored.js';
+  const SUITE_URL = 'https://raw.githubusercontent.com/SOELexicon/BookmarkletIncludes/refs/heads/main/JavaScript/bookmarklet-suite.js';
+  const SCRIPT_URL = 'https://raw.githubusercontent.com/SOELexicon/BookmarkletIncludes/refs/heads/main/JavaScript/HtmlAnalyser-refactored.js';
 
   if (window.BMS) {
     const script = document.createElement('script');
