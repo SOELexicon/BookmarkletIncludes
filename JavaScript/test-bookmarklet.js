@@ -4,7 +4,7 @@
 (function(){
   // Since we are in the same directory, we can just load the script.
   // In a real bookmarklet, this would be a full URL to the hosted script.
-  const scriptUrl = 'bookmarklet-suite.js';
+  const scriptUrl = 'https://raw.githubusercontent.com/SOELexicon/BookmarkletIncludes/refs/heads/main/JavaScript/bookmarklet-suite.js';
 
   // Avoid re-injecting the script
   if (window.BMS) {

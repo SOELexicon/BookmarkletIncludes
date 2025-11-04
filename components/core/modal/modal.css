@@ -1,0 +1,369 @@
+/**
+ * Enhanced Modal Component Styles
+ * Dark theme by default with animations
+ */
+
+/* Overlay */
+.bms-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11000;
+}
+
+.bms-modal-overlay.bms-animated {
+    animation: bms-fade-in 0.3s ease-out;
+}
+
+.bms-modal-overlay.bms-modal-closing {
+    animation: bms-fade-out 0.3s ease-in forwards;
+}
+
+/* Modal Container */
+.bms-modal {
+    background: var(--bms-modal-bg, #1e1e1e);
+    border: 1px solid var(--bms-modal-border, #3a3a3a);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: var(--bms-modal-text, #e0e0e0);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bms-modal.bms-animated {
+    animation: bms-modal-slide-in 0.3s ease-out;
+}
+
+.bms-modal.bms-modal-closing {
+    animation: bms-modal-slide-out 0.3s ease-in forwards;
+}
+
+/* Size variants */
+.bms-modal.bms-modal-small {
+    width: 400px;
+}
+
+.bms-modal.bms-modal-medium {
+    width: 600px;
+}
+
+.bms-modal.bms-modal-large {
+    width: 800px;
+}
+
+.bms-modal.bms-modal-fullscreen {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 40px);
+}
+
+/* Header */
+.bms-modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--bms-modal-border, #3a3a3a);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bms-modal-header-bg, linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%));
+    border-radius: 12px 12px 0 0;
+}
+
+.bms-modal-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--bms-modal-title-color, #ffffff);
+}
+
+.bms-modal-close {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--bms-modal-close-color, #e0e0e0);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.bms-modal-close:hover {
+    background: rgba(255, 67, 54, 0.8);
+    border-color: rgba(255, 67, 54, 0.9);
+    color: white;
+    transform: scale(1.1);
+}
+
+.bms-modal-close:active {
+    transform: scale(0.95);
+}
+
+/* Body */
+.bms-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    background: var(--bms-modal-body-bg, #1e1e1e);
+}
+
+/* Footer */
+.bms-modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--bms-modal-border, #3a3a3a);
+    background: var(--bms-modal-footer-bg, #1a1a1a);
+    border-radius: 0 0 12px 12px;
+}
+
+.bms-modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* Buttons */
+.bms-modal-btn {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+.bms-modal-btn-default {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.bms-modal-btn-default:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.bms-modal-btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.bms-modal-btn-primary:hover {
+    background: linear-gradient(135deg, #7189ff 0%, #8557b8 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+}
+
+.bms-modal-btn-success {
+    background: linear-gradient(135deg, #00c851 0%, #00a844 100%);
+    color: white;
+}
+
+.bms-modal-btn-success:hover {
+    background: linear-gradient(135deg, #00de5a 0%, #00c04d 100%);
+    transform: translateY(-1px);
+}
+
+.bms-modal-btn-danger {
+    background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+    color: white;
+}
+
+.bms-modal-btn-danger:hover {
+    background: linear-gradient(135deg, #ff5555 0%, #dd1111 100%);
+    transform: translateY(-1px);
+}
+
+.bms-modal-btn:active {
+    transform: translateY(0);
+}
+
+/* Alert styles */
+.bms-modal-alert {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.bms-modal-alert-info {
+    background: rgba(33, 150, 243, 0.1);
+    border: 1px solid rgba(33, 150, 243, 0.3);
+    color: #64b5f6;
+}
+
+.bms-modal-alert-success {
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: #81c784;
+}
+
+.bms-modal-alert-warning {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    color: #ffd54f;
+}
+
+.bms-modal-alert-danger {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: #ef5350;
+}
+
+/* Input styles */
+.bms-modal-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+}
+
+.bms-modal-input:focus {
+    outline: none;
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.bms-modal-input-error {
+    border-color: #ff4444 !important;
+}
+
+.bms-modal-error {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Animations */
+@keyframes bms-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bms-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bms-modal-slide-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes bms-modal-slide-out {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+}
+
+/* Light theme override (optional - users can add .bms-light-theme class) */
+.bms-light-theme .bms-modal {
+    --bms-modal-bg: #ffffff;
+    --bms-modal-border: #e0e0e0;
+    --bms-modal-text: #333333;
+    --bms-modal-header-bg: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    --bms-modal-title-color: #333333;
+    --bms-modal-body-bg: #ffffff;
+    --bms-modal-footer-bg: #f5f5f5;
+    --bms-modal-close-color: #666666;
+}
+
+.bms-light-theme .bms-modal-overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.bms-light-theme .bms-modal-btn-default {
+    background: #f5f5f5;
+    border-color: #e0e0e0;
+    color: #333333;
+}
+
+.bms-light-theme .bms-modal-btn-default:hover {
+    background: #e8e8e8;
+    border-color: #d0d0d0;
+}
+
+.bms-light-theme .bms-modal-input {
+    background: #ffffff;
+    border-color: #e0e0e0;
+    color: #333333;
+}
+
+.bms-light-theme .bms-modal-input:focus {
+    background: #ffffff;
+    border-color: #667eea;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bms-modal {
+        min-width: 90vw;
+    }
+
+    .bms-modal.bms-modal-small,
+    .bms-modal.bms-modal-medium,
+    .bms-modal.bms-modal-large {
+        width: 90vw;
+    }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .bms-modal-overlay.bms-animated,
+    .bms-modal.bms-animated {
+        animation: none;
+        transition: opacity 0.1s ease;
+    }
+
+    .bms-modal-overlay.bms-modal-closing,
+    .bms-modal.bms-modal-closing {
+        animation: none;
+        opacity: 0;
+    }
+
+    .bms-modal-btn,
+    .bms-modal-close,
+    .bms-modal-input {
+        transition: opacity 0.1s ease;
+    }
+}

@@ -1,0 +1,247 @@
+/**
+ * Enhanced Panel Component Styles
+ * With animations and theme support
+ */
+
+.bms-panel-enhanced {
+    background: var(--bms-panel-bg, #1e1e1e);
+    border: 1px solid var(--bms-panel-border, #3a3a3a);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    color: var(--bms-panel-text, #e0e0e0);
+}
+
+/* Animation support */
+.bms-panel-enhanced.bms-animated {
+    animation: bms-panel-appear 0.3s ease-out;
+    transition: all 0.3s ease;
+}
+
+@keyframes bms-panel-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Closing animation */
+.bms-panel-enhanced.bms-panel-closing {
+    animation: bms-panel-close 0.3s ease-in forwards;
+}
+
+@keyframes bms-panel-close {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+}
+
+/* Header */
+.bms-panel-enhanced .bms-panel-header {
+    background: var(--bms-panel-header-bg, linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%));
+    color: var(--bms-panel-header-color, #ffffff);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    position: relative;
+}
+
+.bms-panel-enhanced .bms-panel-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.bms-panel-enhanced .bms-panel-title {
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Controls */
+.bms-panel-enhanced .bms-panel-controls {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.bms-panel-enhanced .bms-panel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    padding: 0;
+    outline: none;
+}
+
+.bms-panel-enhanced .bms-panel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bms-panel-enhanced .bms-panel-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button special styling */
+.bms-panel-enhanced .bms-panel-close:hover {
+    background: rgba(255, 67, 54, 0.8);
+    border-color: rgba(255, 67, 54, 0.9);
+}
+
+/* Content */
+.bms-panel-enhanced .bms-panel-content {
+    flex: 1;
+    padding: 16px;
+    overflow: auto;
+    background: var(--bms-panel-content-bg, #1e1e1e);
+}
+
+/* Footer */
+.bms-panel-enhanced .bms-panel-footer {
+    padding: 8px;
+    background: var(--bms-panel-footer-bg, #1a1a1a);
+    border-top: 1px solid var(--bms-panel-border, #3a3a3a);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Resizer */
+.bms-panel-enhanced .bms-panel-resizer {
+    width: 20px;
+    height: 20px;
+    cursor: nwse-resize;
+    color: var(--bms-panel-resizer-color, #666);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.bms-panel-enhanced .bms-panel-resizer:hover {
+    color: var(--bms-panel-resizer-hover, #999);
+}
+
+/* States */
+.bms-panel-enhanced.bms-dragging {
+    opacity: 0.9;
+    transition: none !important;
+}
+
+.bms-panel-enhanced.bms-resizing {
+    transition: none !important;
+}
+
+.bms-panel-enhanced.bms-resizing .bms-panel-content {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Minimized state */
+.bms-panel-enhanced.bms-minimized {
+    height: auto !important;
+}
+
+.bms-panel-enhanced.bms-minimized .bms-panel-content,
+.bms-panel-enhanced.bms-minimized .bms-panel-footer {
+    display: none;
+}
+
+/* Collapsed state */
+.bms-panel-enhanced.bms-collapsed .bms-panel-content {
+    display: none;
+}
+
+.bms-panel-enhanced.bms-collapsed .bms-panel-footer {
+    display: none;
+}
+
+/* Maximized state */
+.bms-panel-enhanced.bms-maximized {
+    animation: bms-panel-maximize 0.3s ease-out;
+}
+
+@keyframes bms-panel-maximize {
+    from {
+        transform: scale(0.95);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Light theme override (optional - users can add .bms-light-theme class) */
+.bms-light-theme .bms-panel-enhanced {
+    --bms-panel-bg: #ffffff;
+    --bms-panel-border: #e0e0e0;
+    --bms-panel-text: #333333;
+    --bms-panel-header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bms-panel-content-bg: #ffffff;
+    --bms-panel-footer-bg: #f5f5f5;
+    --bms-panel-resizer-color: #999;
+    --bms-panel-resizer-hover: #666;
+    color: #333333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bms-panel-enhanced {
+        min-width: 90%;
+        left: 5% !important;
+    }
+}
+
+/* Accessibility - Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .bms-panel-enhanced.bms-animated {
+        animation: none;
+        transition: opacity 0.1s ease;
+    }
+
+    .bms-panel-enhanced.bms-panel-closing {
+        animation: none;
+        opacity: 0;
+    }
+
+    .bms-panel-enhanced.bms-maximized {
+        animation: none;
+    }
+
+    .bms-panel-enhanced .bms-panel-btn {
+        transition: opacity 0.1s ease;
+    }
+}

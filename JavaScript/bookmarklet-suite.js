@@ -2,11 +2,63 @@ window.BMS = {
   config: {
     defaultPanelTop: 50,
     defaultPanelLeft: 50,
+    componentsBaseUrl: 'https://raw.githubusercontent.com/SOELexicon/BookmarkletIncludes/refs/heads/main/components/',
+    componentsLoaded: new Set(),
   },
 
   init: function(options = {}) {
     this.config = { ...this.config, ...options };
     this.injectCSS();
+    // Initialize component namespaces
+    if (!this.UI.Components) this.UI.Components = {};
+    if (!this.UI.Templates) this.UI.Templates = {};
+    if (!this.UI.Animations) this.UI.Animations = {};
+  },
+
+  /**
+   * Load component dynamically from GitHub
+   * @param {string} componentPath - Path relative to components directory (e.g., 'core/panel/panel')
+   * @returns {Promise} Promise that resolves when component is loaded
+   */
+  loadComponent: function(componentPath) {
+    if (this.config.componentsLoaded.has(componentPath)) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+      const baseUrl = this.config.componentsBaseUrl;
+
+      // Load JavaScript
+      const script = document.createElement('script');
+      script.src = `${baseUrl}${componentPath}.js`;
+      script.onload = () => {
+        // Load CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `${baseUrl}${componentPath}.css`;
+        link.onload = () => {
+          this.config.componentsLoaded.add(componentPath);
+          resolve();
+        };
+        link.onerror = () => {
+          // CSS might not exist for all components
+          this.config.componentsLoaded.add(componentPath);
+          resolve();
+        };
+        document.head.appendChild(link);
+      };
+      script.onerror = () => reject(new Error(`Failed to load component: ${componentPath}`));
+      document.body.appendChild(script);
+    });
+  },
+
+  /**
+   * Load multiple components
+   * @param {Array} components - Array of component paths
+   * @returns {Promise} Promise that resolves when all components are loaded
+   */
+  loadComponents: function(components) {
+    return Promise.all(components.map(c => this.loadComponent(c)));
   },
 
   injectCSS: function() {
