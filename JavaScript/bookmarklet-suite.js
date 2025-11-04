@@ -20,36 +20,35 @@ window.BMS = {
    * @param {string} componentPath - Path relative to components directory (e.g., 'core/panel/panel')
    * @returns {Promise} Promise that resolves when component is loaded
    */
-  loadComponent: function(componentPath) {
+  loadComponent: async function(componentPath) {
     if (this.config.componentsLoaded.has(componentPath)) {
       return Promise.resolve();
     }
 
-    return new Promise((resolve, reject) => {
-      const baseUrl = this.config.componentsBaseUrl;
+    const baseUrl = this.config.componentsBaseUrl;
 
-      // Load JavaScript
-      const script = document.createElement('script');
-      script.src = `${baseUrl}${componentPath}.js`;
-      script.onload = () => {
-        // Load CSS
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = `${baseUrl}${componentPath}.css`;
-        link.onload = () => {
-          this.config.componentsLoaded.add(componentPath);
-          resolve();
-        };
-        link.onerror = () => {
-          // CSS might not exist for all components
-          this.config.componentsLoaded.add(componentPath);
-          resolve();
-        };
-        document.head.appendChild(link);
-      };
-      script.onerror = () => reject(new Error(`Failed to load component: ${componentPath}`));
-      document.body.appendChild(script);
-    });
+    try {
+      // Load and execute JavaScript using fetch + Function() to bypass CSP
+      const jsUrl = `${baseUrl}${componentPath}.js`;
+      const jsCode = await fetch(jsUrl).then(r => r.text());
+      (new Function(jsCode))();
+
+      // Load CSS using fetch + inline style to bypass CSP
+      try {
+        const cssUrl = `${baseUrl}${componentPath}.css`;
+        const cssCode = await fetch(cssUrl).then(r => r.text());
+        const style = document.createElement("style");
+        style.textContent = cssCode;
+        document.head.appendChild(style);
+      } catch (cssError) {
+        // CSS might not exist for all components, ignore error
+        console.log(`No CSS found for ${componentPath}, continuing...`);
+      }
+
+      this.config.componentsLoaded.add(componentPath);
+    } catch (error) {
+      throw new Error(`Failed to load component: ${componentPath} - ${error.message}`);
+    }
   },
 
   /**
