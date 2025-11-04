@@ -207,21 +207,36 @@ BMS.runTwitterMediaExtractor = async function() {
       const itemDiv = document.createElement('div');
       itemDiv.style.cssText = 'padding: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);';
 
-      itemDiv.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div style="flex: 1;">
-            <div style="font-weight: bold; color: ${item.type === 'Image' ? '#667eea' : '#ff9800'}; margin-bottom: 4px;">
-              ${item.type === 'Image' ? '🖼️' : '🎬'} ${item.type} #${index + 1}
-            </div>
-            <div style="font-size: 12px; color: #999;">${item.filename}</div>
-            <div style="font-size: 11px; color: #666; margin-top: 2px;">Tweet ${item.tweetIndex} • ${item.author}</div>
+      const itemContent = document.createElement('div');
+      itemContent.style.cssText = 'display: flex; justify-content: space-between; align-items: center;';
+
+      itemContent.innerHTML = `
+        <div style="flex: 1;">
+          <div style="font-weight: bold; color: ${item.type === 'Image' ? '#667eea' : '#ff9800'}; margin-bottom: 4px;">
+            ${item.type === 'Image' ? '🖼️' : '🎬'} ${item.type} #${index + 1}
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button onclick="window.open('${item.originalUrl}', '_blank')" style="padding: 6px 12px; background: rgba(102,126,234,0.2); border: 1px solid rgba(102,126,234,0.4); border-radius: 4px; color: #667eea; cursor: pointer; font-size: 12px;">Open</button>
-            <button onclick="(${downloadMedia.toString()})('${item.originalUrl}', '${item.filename}')" style="padding: 6px 12px; background: rgba(0,200,81,0.2); border: 1px solid rgba(0,200,81,0.4); border-radius: 4px; color: #00c851; cursor: pointer; font-size: 12px;">Download</button>
-          </div>
+          <div style="font-size: 12px; color: #999;">${item.filename}</div>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;">Tweet ${item.tweetIndex} • ${item.author}</div>
         </div>
       `;
+
+      const buttonContainer = document.createElement('div');
+      buttonContainer.style.cssText = 'display: flex; gap: 8px;';
+
+      const openBtn = document.createElement('button');
+      openBtn.textContent = 'Open';
+      openBtn.style.cssText = 'padding: 6px 12px; background: rgba(102,126,234,0.2); border: 1px solid rgba(102,126,234,0.4); border-radius: 4px; color: #667eea; cursor: pointer; font-size: 12px;';
+      openBtn.onclick = () => window.open(item.originalUrl, '_blank');
+
+      const downloadBtn = document.createElement('button');
+      downloadBtn.textContent = 'Download';
+      downloadBtn.style.cssText = 'padding: 6px 12px; background: rgba(0,200,81,0.2); border: 1px solid rgba(0,200,81,0.4); border-radius: 4px; color: #00c851; cursor: pointer; font-size: 12px;';
+      downloadBtn.onclick = () => downloadMedia(item.originalUrl, item.filename);
+
+      buttonContainer.appendChild(openBtn);
+      buttonContainer.appendChild(downloadBtn);
+      itemContent.appendChild(buttonContainer);
+      itemDiv.appendChild(itemContent);
 
       listContainer.appendChild(itemDiv);
     });
@@ -308,22 +323,29 @@ BMS.runTwitterMediaExtractor = async function() {
           title: 'Actions',
           width: '180px',
           renderer: (value, row) => {
-            return `
-              <div style="display: flex; gap: 4px;">
-                <button onclick="window.open('${row.originalUrl}', '_blank')"
-                        style="flex: 1; padding: 4px 8px; background: rgba(102,126,234,0.2); border: 1px solid rgba(102,126,234,0.4); border-radius: 4px; color: #667eea; cursor: pointer; font-size: 11px;">
-                  Open
-                </button>
-                <button onclick="(${downloadMedia.toString()})('${row.originalUrl}', '${row.filename}')"
-                        style="flex: 1; padding: 4px 8px; background: rgba(0,200,81,0.2); border: 1px solid rgba(0,200,81,0.4); border-radius: 4px; color: #00c851; cursor: pointer; font-size: 11px;">
-                  Download
-                </button>
-                <button onclick="(${copyToClipboard.toString()})('${row.originalUrl}')"
-                        style="padding: 4px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: #e0e0e0; cursor: pointer; font-size: 11px;">
-                  📋
-                </button>
-              </div>
-            `;
+            const container = document.createElement('div');
+            container.style.cssText = 'display: flex; gap: 4px;';
+
+            const openBtn = document.createElement('button');
+            openBtn.textContent = 'Open';
+            openBtn.style.cssText = 'flex: 1; padding: 4px 8px; background: rgba(102,126,234,0.2); border: 1px solid rgba(102,126,234,0.4); border-radius: 4px; color: #667eea; cursor: pointer; font-size: 11px;';
+            openBtn.onclick = () => window.open(row.originalUrl, '_blank');
+
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Download';
+            downloadBtn.style.cssText = 'flex: 1; padding: 4px 8px; background: rgba(0,200,81,0.2); border: 1px solid rgba(0,200,81,0.4); border-radius: 4px; color: #00c851; cursor: pointer; font-size: 11px;';
+            downloadBtn.onclick = () => downloadMedia(row.originalUrl, row.filename);
+
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = '📋';
+            copyBtn.style.cssText = 'padding: 4px 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; color: #e0e0e0; cursor: pointer; font-size: 11px;';
+            copyBtn.onclick = () => copyToClipboard(row.originalUrl);
+
+            container.appendChild(openBtn);
+            container.appendChild(downloadBtn);
+            container.appendChild(copyBtn);
+
+            return container;
           }
         }
       ],
