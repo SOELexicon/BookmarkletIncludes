@@ -1,9 +1,10 @@
 // This file is for testing the Bookmarklet Suite.
 // It simulates the loading of the suite and the creation of a UI panel.
+//
+// NOTE: This test file will NOT work on GitHub.com due to strict Content Security Policy (CSP).
+// Test on regular websites like: news sites, Twitter/X, Wikipedia, etc.
 
-(function(){
-  // Since we are in the same directory, we can just load the script.
-  // In a real bookmarklet, this would be a full URL to the hosted script.
+(async function(){
   const scriptUrl = 'https://raw.githubusercontent.com/SOELexicon/BookmarkletIncludes/refs/heads/main/JavaScript/bookmarklet-suite.js';
 
   // Avoid re-injecting the script
@@ -17,9 +18,14 @@
     return;
   }
 
-  const script = document.createElement('script');
-  script.src = scriptUrl;
-  script.onload = () => {
+  try {
+    // Fetch and load via Blob URL to bypass some CSP restrictions
+    const suiteCode = await fetch(scriptUrl).then(r => r.text());
+    const blob = new Blob([suiteCode], {type: 'text/javascript'});
+    const blobUrl = URL.createObjectURL(blob);
+    await import(blobUrl);
+    URL.revokeObjectURL(blobUrl);
+
     BMS.init();
     BMS.UI.createPanel({
       id: 'bms-test-panel',
@@ -98,7 +104,8 @@
       const inputText = document.getElementById('bms-parse-input').value;
       parseOutput.textContent = BMS.Utils.parseEngagementCount(inputText);
     };
-  };
-  document.head.appendChild(script);
+  } catch(e) {
+    alert('Failed to load Bookmarklet Suite: ' + e.message + '\n\nThis may be due to Content Security Policy restrictions. Try testing on a different website (not GitHub.com).');
+  }
 
 })();

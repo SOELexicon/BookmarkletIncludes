@@ -117,6 +117,36 @@ No build process required. Test bookmarklets by:
 
 2. Run comprehensive tests via `JavaScript/test-bookmarklet.js` which tests all BMS features
 
+### Content Security Policy (CSP) Limitations
+
+**CRITICAL**: Bookmarklets **CANNOT** run on websites with strict Content Security Policy headers.
+
+**GitHub.com is IMPOSSIBLE for bookmarklets** because it blocks:
+- External scripts (`script-src github.githubassets.com` only)
+- Inline scripts (no `unsafe-inline`)
+- Eval and dynamic imports (no `unsafe-eval`)
+- Blob URLs (blocked by script-src)
+
+**Other sites where bookmarklets will NOT work:**
+- Banking websites (Chase, Bank of America, etc.)
+- Government websites (.gov domains)
+- Enterprise applications with security policies
+- Any site with `script-src` without `unsafe-inline`
+
+**Sites where bookmarklets WILL work:**
+- Twitter/X.com ✓
+- Wikipedia.org ✓
+- News websites (CNN, BBC, etc.) ✓
+- Reddit.com ✓
+- YouTube.com ✓
+- Most blog platforms ✓
+- E-commerce sites ✓
+- Personal websites ✓
+
+**DO NOT test bookmarklets on GitHub.com** - use the local HTML test files instead, or test on Twitter/Wikipedia.
+
+**Technical details**: The loaders fetch JavaScript code and inject it as inline scripts using `script.textContent`. This bypasses most CSP restrictions, but sites like GitHub explicitly block inline scripts. This is a fundamental browser security feature, not a bug.
+
 ## Important Conventions
 
 - **CSS Classes**: Always prefix with `bms-` to avoid conflicts
